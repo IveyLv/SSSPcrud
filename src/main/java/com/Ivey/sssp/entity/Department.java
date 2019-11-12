@@ -1,10 +1,8 @@
 package com.Ivey.sssp.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+@Cacheable
 @Entity
 @Table(name = "tb_department")
 public class Department {
