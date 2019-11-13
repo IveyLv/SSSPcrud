@@ -6,10 +6,7 @@ import com.Ivey.sssp.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -65,5 +62,36 @@ public class EmployeeController {
     public String saveEmp(Employee employee) {
         employeeService.save(employee);
         return "redirect:emps";
+    }
+
+    @RequestMapping(value = "emp/{id}", method = RequestMethod.GET)
+    public String toUpdate(@PathVariable("id") Integer id, Map<String, Object> map) {
+        Employee employee = employeeService.getEmp(id);
+        System.out.println(employee);
+        map.put("employee", employee);
+        map.put("departments", departmentService.getAll());
+        return "emp/input";
+    }
+
+    @ModelAttribute
+    public void getEmployee(@RequestParam(value = "id", required = false) Integer id, Map<String, Object> map) {
+        if (id != null) {
+            Employee employee = employeeService.getEmp(id);
+            employee.setDepartment(null);
+            map.put("employee", employee);
+        }
+    }
+
+    @RequestMapping(value = "emp/{id}", method = RequestMethod.PUT)
+    public String update(Employee employee) {
+        System.out.println("update method...");
+        employeeService.save(employee);
+        return "redirect:/emps";
+    }
+
+    @RequestMapping(value = "emp/{id}", method = RequestMethod.DELETE)
+    public String delete(@PathVariable("id") Integer id) {
+        employeeService.delete(id);
+        return "redirect:/emps";
     }
 }

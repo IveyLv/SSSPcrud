@@ -29,7 +29,19 @@ public class EmployeeService {
 
     @Transactional
     public void save(Employee employee) {
-        employee.setCreateDate(new Date());
+        if (employee.getId() == null) {
+            employee.setCreateDate(new Date());
+        }
         employeeRepository.saveAndFlush(employee);
+    }
+
+    @Transactional(readOnly = true)
+    public Employee getEmp(Integer id) {
+        return employeeRepository.findOne(id);
+    }
+
+    @Transactional
+    public void delete(Integer id) {
+        employeeRepository.delete(id);
     }
 }

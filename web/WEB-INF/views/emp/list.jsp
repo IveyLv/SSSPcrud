@@ -14,6 +14,18 @@
     <script src="${pageContext.request.contextPath}/static/js/jquery-3.4.1.js"></script>
     <link href="${pageContext.request.contextPath}/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="${pageContext.request.contextPath}/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".btn_delete").click(function () {
+                var label = $(this).next(":hidden").val();
+                var flag = confirm("确定要删除" + label + "的信息吗？");
+                if (flag) {
+                    $("#del_form").submit();
+                }
+                return false;
+            });
+        })
+    </script>
 </head>
 <body>
     <div class="container">
@@ -48,16 +60,22 @@
                                 <td><fmt:formatDate value="${emp.createDate}" pattern="yyyy-MM-dd hh-mm-ss"/></td>
                                 <td>${emp.department.deptName}</td>
                                 <td>
-                                    <button type="button" class="btn btn-primary btn-sm">
-                                        <span class="glyphicon glyphicon-pencil"></span>
-                                        编辑
-                                    </button>
+                                    <form action="${pageContext.request.contextPath}/emp/${emp.id}" method="get">
+                                        <button type="submit" class="btn btn-primary btn-sm" id="btn_edit">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                            编辑
+                                        </button>
+                                    </form>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-danger btn-sm">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                        删除
-                                    </button>
+                                    <form action="${pageContext.request.contextPath}/emp/${emp.id}" method="POST" id="del_form">
+                                        <button type="submit" class="btn btn-danger btn-sm btn_delete">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                            删除
+                                        </button>
+                                        <input type="hidden" value="${emp.lastName}">
+                                        <input type="hidden" name="_method" value="DELETE" id="_method">
+                                    </form>
                                 </td>
                             </tr>
                         </c:forEach>
